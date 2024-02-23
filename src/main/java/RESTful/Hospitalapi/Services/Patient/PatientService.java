@@ -14,9 +14,9 @@ public class PatientService {
     private PatientRepository repository;
 
 
-    public void createPatient(RegisterPatientDTO dto){
+    public PatientEntity createPatient(RegisterPatientDTO dto){
         PatientEntity entity = new PatientEntity(dto);
-        repository.save(entity);
+        return repository.save(entity);
     }
 
 }

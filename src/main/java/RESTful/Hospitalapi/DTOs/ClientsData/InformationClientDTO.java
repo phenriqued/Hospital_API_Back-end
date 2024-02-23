@@ -1,8 +1,20 @@
 package RESTful.Hospitalapi.DTOs.ClientsData;
 
 import br.com.caelum.stella.validation.CPFValidator;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
-public record InformationClientDTO(String cpf, String name, String email, String phone) {
+
+public record InformationClientDTO(
+        @NotBlank
+        String cpf,
+        @NotBlank
+        String name,
+        @Email
+        String email,
+        @Pattern(regexp = "^[0-9]{2}-?[0-9]{9}$")
+        String phone) {
 
     public InformationClientDTO{
         if(!validateCpf(cpf))
