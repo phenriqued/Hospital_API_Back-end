@@ -1,6 +1,7 @@
 package RESTful.Hospitalapi.Services.Patient;
 
 
+import RESTful.Hospitalapi.DTOs.Patients.AllPatientDetailsDTO;
 import RESTful.Hospitalapi.DTOs.Patients.PatientDetailsDTO;
 import RESTful.Hospitalapi.DTOs.Patients.RegisterPatientDTO;
 import RESTful.Hospitalapi.Entities.Patients.PatientEntity;
@@ -23,9 +24,12 @@ public class PatientService {
         return repository.save(entity);
     }
 
-    public List<PatientDetailsDTO> patientDetails(Pageable pageable){
-        return repository.findByIsActiveTrue(pageable).stream().map(PatientDetailsDTO::new).toList();
+    public List<AllPatientDetailsDTO> allPatientDetails(Pageable pageable){
+        return repository.findByIsActiveTrue(pageable).map(AllPatientDetailsDTO::new).toList();
     }
 
+    public PatientDetailsDTO patientDetails(Long id){
+        return repository.findById(id).map(PatientDetailsDTO::new).orElse(null);
+    }
 
 }

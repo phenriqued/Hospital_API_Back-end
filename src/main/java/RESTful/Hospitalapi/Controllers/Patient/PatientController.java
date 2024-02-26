@@ -1,6 +1,7 @@
 package RESTful.Hospitalapi.Controllers.Patient;
 
 
+import RESTful.Hospitalapi.DTOs.Patients.AllPatientDetailsDTO;
 import RESTful.Hospitalapi.DTOs.Patients.PatientDetailsDTO;
 import RESTful.Hospitalapi.DTOs.Patients.RegisterPatientDTO;
 import RESTful.Hospitalapi.Services.Patient.PatientService;
@@ -31,8 +32,17 @@ public class PatientController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PatientDetailsDTO>> listPatientDetails(@PageableDefault(size = 10, sort = "information.name") Pageable pageable){
-        return ResponseEntity.ok().body(service.patientDetails(pageable));
+    public ResponseEntity<List<AllPatientDetailsDTO>> listAllPatientDetails(@PageableDefault(size = 10, sort = "information.name") Pageable pageable){
+        return ResponseEntity.ok().body(service.allPatientDetails(pageable));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PatientDetailsDTO> patientDetails(@PathVariable Long id){
+        if (service.patientDetails(id) != null){
+            return ResponseEntity.ok().body(service.patientDetails(id));
+        }
+        return ResponseEntity.badRequest().build();
+
     }
 
 
