@@ -4,6 +4,7 @@ package RESTful.Hospitalapi.Controllers.Patient;
 import RESTful.Hospitalapi.DTOs.Patients.AllPatientDetailsDTO;
 import RESTful.Hospitalapi.DTOs.Patients.PatientDetailsDTO;
 import RESTful.Hospitalapi.DTOs.Patients.RegisterPatientDTO;
+import RESTful.Hospitalapi.DTOs.Patients.UpdatePatientDTO;
 import RESTful.Hospitalapi.Services.Patient.PatientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,15 @@ public class PatientController {
             return ResponseEntity.ok().body(service.patientDetails(id));
         }
         return ResponseEntity.badRequest().build();
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity updatePatient(@PathVariable Long id, @RequestBody @Valid UpdatePatientDTO updatePatient){
+        if (!service.patientIsExist(id)){
+            return ResponseEntity.badRequest().build();
+        }
+        service.updatePatient(id,updatePatient);
+        return ResponseEntity.noContent().build();
     }
 
 

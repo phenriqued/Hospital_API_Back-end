@@ -2,6 +2,7 @@ package RESTful.Hospitalapi.Entities.Patients;
 
 
 import RESTful.Hospitalapi.DTOs.Patients.RegisterPatientDTO;
+import RESTful.Hospitalapi.DTOs.Patients.UpdatePatientDTO;
 import RESTful.Hospitalapi.Entities.ClientsData.AddressClient;
 import RESTful.Hospitalapi.Entities.ClientsData.InformationClient;
 import jakarta.persistence.*;
@@ -26,14 +27,19 @@ public class PatientEntity {
     private AddressClient address;
     private Boolean isActive;
 
-    public PatientEntity(RegisterPatientDTO register){
+    public PatientEntity(RegisterPatientDTO register) {
         this.information = new InformationClient(register.information());
         this.address = new AddressClient(register.address());
         this.isActive = true;
     }
 
+    public void updatePatient(UpdatePatientDTO updatePatient) {
+        information.updateInformationClient(updatePatient.information());
+        address.updateAddressClient(updatePatient.address());
+    }
 
-    public void disable(){
+
+    public void disable() {
         this.isActive = false;
     }
 
