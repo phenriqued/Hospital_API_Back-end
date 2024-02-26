@@ -54,5 +54,15 @@ public class PatientController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity deletePatient(@PathVariable Long id){
+        if (!service.patientIsExist(id)){
+            return ResponseEntity.badRequest().build();
+        }
+        service.deletePatient(id);
+        return ResponseEntity.ok().build();
+    }
+
+
 
 }

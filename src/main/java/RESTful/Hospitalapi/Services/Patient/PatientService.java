@@ -33,18 +33,26 @@ public class PatientService {
         return repository.findById(id).map(PatientDetailsDTO::new).orElse(null);
     }
 
-    public PatientEntity updatePatient(Long id, UpdatePatientDTO update){
+    public void updatePatient(Long id, UpdatePatientDTO update){
         if(repository.findById(id).isEmpty()){
             throw new IllegalArgumentException("Entity not Found");
         }
         var entity = repository.findById(id).get();
         entity.updatePatient(update);
         repository.flush();
-        return entity;
     }
 
     public Boolean patientIsExist(Long id){
         return repository.findById(id).isPresent();
+    }
+
+    public void deletePatient(Long id){
+        if(repository.findById(id).isEmpty()){
+            throw new IllegalArgumentException("Entity not Found");
+        }
+        var entity = repository.findById(id).get();
+        entity.disable();
+        repository.flush();
     }
 
 
