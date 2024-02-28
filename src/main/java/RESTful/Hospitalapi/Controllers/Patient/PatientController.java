@@ -33,7 +33,7 @@ public class PatientController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AllPatientDetailsDTO>> listAllPatientDetails(@PageableDefault(size = 10, sort = "information.name") Pageable pageable){
+    public ResponseEntity<List<AllPatientDetailsDTO>> listAllPatient(@PageableDefault(size = 10, sort = "information.name") Pageable pageable){
         return ResponseEntity.ok().body(service.allPatientDetails(pageable));
     }
 

@@ -1,5 +1,6 @@
 package RESTful.Hospitalapi.DTOs.ClientsData;
 
+import RESTful.Hospitalapi.Entities.ClientsData.InformationClient;
 import br.com.caelum.stella.validation.CPFValidator;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -20,6 +21,10 @@ public record InformationClientDTO(
         if(!validateCpf(cpf))
             throw new IllegalArgumentException("Invalid CPF");
 
+    }
+
+    public InformationClientDTO(InformationClient information){
+        this(information.getCpf(), information.getName(), information.getEmail(), information.getPhone());
     }
 
 

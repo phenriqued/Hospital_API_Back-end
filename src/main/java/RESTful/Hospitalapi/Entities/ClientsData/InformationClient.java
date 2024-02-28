@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 @Embeddable
 public class InformationClient {
 
-    private String CPF;
+    private String cpf;
     @Setter(AccessLevel.PRIVATE)
     private String name;
     @Setter(AccessLevel.PRIVATE)

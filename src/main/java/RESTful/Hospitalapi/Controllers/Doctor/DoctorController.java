@@ -5,6 +5,8 @@ import RESTful.Hospitalapi.DTOs.Doctors.RegisterDoctorDTO;
 import RESTful.Hospitalapi.Services.Doctors.DoctorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -25,6 +27,10 @@ public class DoctorController {
         return ResponseEntity.created(uri).body(doctor);
     }
 
+    @GetMapping
+    public ResponseEntity listAllDoctor(@PageableDefault(size = 10, sort = "information.name")Pageable pageable){
+        return ResponseEntity.ok().body(service.listAllDoctors(pageable));
+    }
 
 
 }

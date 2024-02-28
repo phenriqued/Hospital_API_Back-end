@@ -13,6 +13,4 @@ public record RegisterDoctorDTO(
         @NotBlank
         String speciality) {
 
-
-
 }
