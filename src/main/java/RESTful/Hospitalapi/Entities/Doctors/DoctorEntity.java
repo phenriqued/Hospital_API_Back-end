@@ -1,6 +1,7 @@
 package RESTful.Hospitalapi.Entities.Doctors;
 
 
+import RESTful.Hospitalapi.DTOs.Doctors.RegisterDoctorDTO;
 import RESTful.Hospitalapi.Entities.ClientsData.AddressClient;
 import RESTful.Hospitalapi.Entities.ClientsData.InformationClient;
 import RESTful.Hospitalapi.Entities.Doctors.Speciality.Speciality;
@@ -29,6 +30,14 @@ public class DoctorEntity {
     private Boolean isActive;
 
 
+    public DoctorEntity(RegisterDoctorDTO dto){
+        this.information = new InformationClient(dto.information());
+        this.address = new AddressClient(dto.address());
+        this.speciality = typeOfDoctor(dto.speciality());
+        this.crm = createCrm();
+        this.isActive = true;
+    }
+
 
 
     public void disable(){
@@ -36,11 +45,19 @@ public class DoctorEntity {
     }
 
     private String createCrm(){
-        StringBuilder value = new StringBuilder(speciality.getValue());
+        StringBuilder value = new StringBuilder(speciality.getValue() + "-");
         for (int i=0; i<5; i++){
-            value.append((int) (Math.random() * 100));
+            value.append((int) (Math.random() * 10));
         }
         return value.toString();
     }
+
+    private Speciality typeOfDoctor(String value){
+        return Speciality.valueOf(value.toUpperCase());
+    }
+    private Speciality typeOfDoctor(Integer value){
+        return Speciality.intValueOf(value);
+    }
+
 
 }
