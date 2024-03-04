@@ -5,6 +5,7 @@ import RESTful.Hospitalapi.DTOs.Patients.AllPatientDetailsDTO;
 import RESTful.Hospitalapi.DTOs.Patients.PatientDetailsDTO;
 import RESTful.Hospitalapi.DTOs.Patients.RegisterPatientDTO;
 import RESTful.Hospitalapi.DTOs.Patients.UpdatePatientDTO;
+import RESTful.Hospitalapi.Entities.Patients.PatientEntity;
 import RESTful.Hospitalapi.Services.Patient.PatientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class PatientController {
     private PatientService service;
 
     @PostMapping
-    public ResponseEntity registerPatient(@RequestBody @Valid RegisterPatientDTO dto, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<PatientEntity> registerPatient(@RequestBody @Valid RegisterPatientDTO dto, UriComponentsBuilder uriBuilder){
         var patientCreated = service.createPatient(dto);
 
         URI uri = uriBuilder.path("/Patient/{id}").buildAndExpand(patientCreated.getId()).toUri();
@@ -39,10 +40,10 @@ public class PatientController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PatientDetailsDTO> patientDetails(@PathVariable Long id){
-        if (service.patientDetails(id) != null){
-            return ResponseEntity.ok().body(service.patientDetails(id));
+        if (!service.patientIsExist(id)){
+            return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok().body(service.patientDetails(id));
     }
 
     @PutMapping("/{id}")
@@ -63,6 +64,9 @@ public class PatientController {
         return ResponseEntity.ok().build();
     }
 
+//    private ResponseEntity checkId(Long id){
+//
+//    }
 
 
 }

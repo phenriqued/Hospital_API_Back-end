@@ -1,7 +1,9 @@
 package RESTful.Hospitalapi.Controllers.Doctor;
 
 
+import RESTful.Hospitalapi.DTOs.Doctors.DoctorDetailsDTO;
 import RESTful.Hospitalapi.DTOs.Doctors.RegisterDoctorDTO;
+import RESTful.Hospitalapi.DTOs.Doctors.UpdateDoctorDTO;
 import RESTful.Hospitalapi.Services.Doctors.DoctorService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -22,6 +24,7 @@ public class DoctorController {
     private DoctorService service;
 
     @PostMapping
+    @Transactional
     public ResponseEntity createDoctor(@RequestBody @Valid RegisterDoctorDTO registerDoctor, UriComponentsBuilder uriComponentsBuilder){
         var doctor = service.saveDoctor(registerDoctor);
         URI uri = uriComponentsBuilder.path("/Doctor/{id}").buildAndExpand(doctor.getId()).toUri();
@@ -33,12 +36,26 @@ public class DoctorController {
         return ResponseEntity.ok().body(service.listAllDoctors(pageable));
     }
     @GetMapping("/{id}")
-    public ResponseEntity doctorDetails(@PathVariable Long id){
+    public ResponseEntity<DoctorDetailsDTO> doctorDetails(@PathVariable Long id){
         if(!service.doctorIsExist(id)){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(service.doctorDetails(id));
     }
+
+    @Transactional
+    @PutMapping("/{id}")
+    public ResponseEntity updateDoctor(@PathVariable Long id, @RequestBody UpdateDoctorDTO update){
+        if(!service.doctorIsExist(id)){
+            return ResponseEntity.notFound().build();
+        }
+        service.updateDoctor(id, update);
+        return ResponseEntity.noContent().build();
+    }
+
+//    private ResponseEntity checkId(Long id){
+//
+//    }
 
 
 }

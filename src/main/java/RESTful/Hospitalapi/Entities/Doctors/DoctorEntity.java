@@ -1,7 +1,9 @@
 package RESTful.Hospitalapi.Entities.Doctors;
 
 
+import RESTful.Hospitalapi.DTOs.ClientsData.UpdateInformationClientDTO;
 import RESTful.Hospitalapi.DTOs.Doctors.RegisterDoctorDTO;
+import RESTful.Hospitalapi.DTOs.Doctors.UpdateDoctorDTO;
 import RESTful.Hospitalapi.Entities.ClientsData.AddressClient;
 import RESTful.Hospitalapi.Entities.ClientsData.InformationClient;
 import RESTful.Hospitalapi.Entities.Doctors.Speciality.Speciality;
@@ -33,16 +35,22 @@ public class DoctorEntity {
     public DoctorEntity(RegisterDoctorDTO dto){
         this.information = new InformationClient(dto.information());
         this.address = new AddressClient(dto.address());
-        this.speciality = typeOfDoctor(dto.speciality());
+        this.speciality = Speciality.typeOfDoctor(dto.speciality());
         this.crm = createCrm();
         this.isActive = true;
     }
 
 
-
     public void disable(){
         this.isActive = false;
     }
+
+    public void updateDoctor(UpdateDoctorDTO update){
+        information.updateInformationClient(update.information());
+        address.updateAddressClient(update.address());
+        updateDoctorSpeciality(update.speciality());
+    }
+
 
     private String createCrm(){
         StringBuilder value = new StringBuilder(speciality.getValue() + "-");
@@ -52,11 +60,11 @@ public class DoctorEntity {
         return value.toString();
     }
 
-    private Speciality typeOfDoctor(String value){
-        return Speciality.valueOf(value.toUpperCase());
-    }
-    private Speciality typeOfDoctor(Integer value){
-        return Speciality.intValueOf(value);
+    private void updateDoctorSpeciality(String speciality){
+        if (speciality != null){
+            this.speciality = Speciality.typeOfDoctor(speciality);
+            this.crm = createCrm();
+        }
     }
 
 

@@ -3,6 +3,7 @@ package RESTful.Hospitalapi.Services.Doctors;
 import RESTful.Hospitalapi.DTOs.Doctors.AllDoctorsDetailsDTO;
 import RESTful.Hospitalapi.DTOs.Doctors.DoctorDetailsDTO;
 import RESTful.Hospitalapi.DTOs.Doctors.RegisterDoctorDTO;
+import RESTful.Hospitalapi.DTOs.Doctors.UpdateDoctorDTO;
 import RESTful.Hospitalapi.Entities.Doctors.DoctorEntity;
 import RESTful.Hospitalapi.Repositories.Doctors.DoctorRepository;
 import jakarta.transaction.Transactional;
@@ -18,7 +19,6 @@ public class DoctorService {
     @Autowired
     private DoctorRepository repository;
 
-    @Transactional
     public DoctorEntity saveDoctor(RegisterDoctorDTO dto){
         var entity = new DoctorEntity(dto);
         return repository.save(entity);
@@ -33,6 +33,15 @@ public class DoctorService {
     }
 
     public Boolean doctorIsExist(Long id){
-        return repository.existsById(id);
+        return repository.findById(id).isPresent();
     }
+
+    public void updateDoctor(Long id, UpdateDoctorDTO updateDoctor){
+        var entity = repository.findById(id).get();
+        entity.updateDoctor(updateDoctor);
+        repository.flush();
+    }
+
+
+
 }
