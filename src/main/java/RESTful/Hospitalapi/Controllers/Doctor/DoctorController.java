@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.function.Supplier;
 
 @RestController
 @RequestMapping("/Doctor")
@@ -37,25 +38,27 @@ public class DoctorController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<DoctorDetailsDTO> doctorDetails(@PathVariable Long id){
-        if(!service.doctorIsExist(id)){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok().body(service.doctorDetails(id));
+        return checkId(id, () -> ResponseEntity.ok().body(service.doctorDetails(id)));
+
     }
 
-    @Transactional
     @PutMapping("/{id}")
+    @Transactional
     public ResponseEntity updateDoctor(@PathVariable Long id, @RequestBody UpdateDoctorDTO update){
-        if(!service.doctorIsExist(id)){
-            return ResponseEntity.notFound().build();
-        }
-        service.updateDoctor(id, update);
-        return ResponseEntity.noContent().build();
+        return checkId(id, () -> {
+                    service.updateDoctor(id, update);
+                    return ResponseEntity.noContent().build();
+                    });
     }
 
-//    private ResponseEntity checkId(Long id){
-//
-//    }
+    
+
+    private ResponseEntity checkId(Long id, Supplier<ResponseEntity> actionOnSuccess){
+        if (!service.doctorIsExist(id)){
+            return ResponseEntity.notFound().build();
+        }
+        return actionOnSuccess.get();
+    }
 
 
 }

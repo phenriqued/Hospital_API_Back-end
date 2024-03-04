@@ -7,6 +7,7 @@ import RESTful.Hospitalapi.DTOs.Patients.RegisterPatientDTO;
 import RESTful.Hospitalapi.DTOs.Patients.UpdatePatientDTO;
 import RESTful.Hospitalapi.Entities.Patients.PatientEntity;
 import RESTful.Hospitalapi.Services.Patient.PatientService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.function.Supplier;
 
 @RestController
 @RequestMapping("/Patient")
@@ -26,6 +28,7 @@ public class PatientController {
     private PatientService service;
 
     @PostMapping
+    @Transactional
     public ResponseEntity<PatientEntity> registerPatient(@RequestBody @Valid RegisterPatientDTO dto, UriComponentsBuilder uriBuilder){
         var patientCreated = service.createPatient(dto);
 
@@ -40,33 +43,33 @@ public class PatientController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PatientDetailsDTO> patientDetails(@PathVariable Long id){
-        if (!service.patientIsExist(id)){
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok().body(service.patientDetails(id));
+        return checkId(id, ()-> ResponseEntity.ok().body(service.patientDetails(id)));
     }
 
     @PutMapping("/{id}")
+    @Transactional
     public ResponseEntity updatePatient(@PathVariable Long id, @RequestBody @Valid UpdatePatientDTO updatePatient){
-        if (!service.patientIsExist(id)){
-            return ResponseEntity.badRequest().build();
-        }
-        service.updatePatient(id,updatePatient);
-        return ResponseEntity.noContent().build();
+        return checkId(id, () ->{
+                service.updatePatient(id, updatePatient);
+                return ResponseEntity.noContent().build();
+        } );
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity deletePatient(@PathVariable Long id){
-        if (!service.patientIsExist(id)){
-            return ResponseEntity.badRequest().build();
-        }
-        service.deletePatient(id);
-        return ResponseEntity.ok().build();
+        return checkId(id, ()->{
+            service.deletePatient(id);
+            return ResponseEntity.ok().build();
+        });
     }
 
-//    private ResponseEntity checkId(Long id){
-//
-//    }
+    private ResponseEntity checkId(Long id, Supplier<ResponseEntity> actionOnSuccess){
+        if (!service.patientIsExist(id)){
+            return ResponseEntity.notFound().build();
+        }
+        return actionOnSuccess.get();
+    }
 
 
 }
