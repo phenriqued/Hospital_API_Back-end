@@ -41,8 +41,8 @@ public class DoctorEntity {
     }
 
 
-    public void disable(){
-        this.isActive = false;
+    public void updateIsActive(){
+        this.isActive = !isActive;
     }
 
     public void updateDoctor(UpdateDoctorDTO update){

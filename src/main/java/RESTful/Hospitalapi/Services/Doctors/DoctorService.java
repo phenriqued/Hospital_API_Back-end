@@ -42,6 +42,12 @@ public class DoctorService {
         repository.flush();
     }
 
+    public void deleteDoctor(Long id){
+        var entity = repository.findById(id).get();
+        entity.updateIsActive();
+        repository.flush();
+    }
+
 
 
 }

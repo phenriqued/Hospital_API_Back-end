@@ -51,7 +51,14 @@ public class DoctorController {
                     });
     }
 
-    
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity deleteDoctor(@PathVariable Long id){
+        return checkId(id, ()-> {
+            service.deleteDoctor(id);
+            return ResponseEntity.ok().build();
+        });
+    }
 
     private ResponseEntity checkId(Long id, Supplier<ResponseEntity> actionOnSuccess){
         if (!service.doctorIsExist(id)){
