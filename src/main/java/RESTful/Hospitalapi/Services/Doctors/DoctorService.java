@@ -37,13 +37,13 @@ public class DoctorService {
     }
 
     public void updateDoctor(Long id, UpdateDoctorDTO updateDoctor){
-        var entity = repository.findById(id).get();
+        var entity = repository.findById(id).orElseThrow();
         entity.updateDoctor(updateDoctor);
         repository.flush();
     }
 
     public void deleteDoctor(Long id){
-        var entity = repository.findById(id).get();
+        var entity = repository.findById(id).orElseThrow();
         entity.updateIsActive();
         repository.flush();
     }

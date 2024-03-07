@@ -1,6 +1,7 @@
 package RESTful.Hospitalapi.Controllers.Doctor;
 
 
+import RESTful.Hospitalapi.DTOs.Doctors.AllDoctorsDetailsDTO;
 import RESTful.Hospitalapi.DTOs.Doctors.DoctorDetailsDTO;
 import RESTful.Hospitalapi.DTOs.Doctors.RegisterDoctorDTO;
 import RESTful.Hospitalapi.DTOs.Doctors.UpdateDoctorDTO;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.function.Supplier;
 
 @RestController
@@ -33,7 +35,7 @@ public class DoctorController {
     }
 
     @GetMapping
-    public ResponseEntity listAllDoctor(@PageableDefault(size = 10, sort = "information.name")Pageable pageable){
+    public ResponseEntity<List<AllDoctorsDetailsDTO>> listAllDoctor(@PageableDefault(size = 10, sort = "information.name")Pageable pageable){
         return ResponseEntity.ok().body(service.listAllDoctors(pageable));
     }
     @GetMapping("/{id}")
@@ -66,6 +68,4 @@ public class DoctorController {
         }
         return actionOnSuccess.get();
     }
-
-
 }

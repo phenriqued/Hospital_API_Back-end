@@ -34,10 +34,7 @@ public class PatientService {
     }
 
     public void updatePatient(Long id, UpdatePatientDTO update){
-        if(repository.findById(id).isEmpty()){
-            throw new IllegalArgumentException("Entity not Found");
-        }
-        var entity = repository.findById(id).get();
+        var entity = repository.findById(id).orElseThrow();
         entity.updatePatient(update);
         repository.flush();
     }
@@ -47,10 +44,7 @@ public class PatientService {
     }
 
     public void deletePatient(Long id){
-        if(repository.findById(id).isEmpty()){
-            throw new IllegalArgumentException("Entity not Found");
-        }
-        var entity = repository.findById(id).get();
+        var entity = repository.findById(id).orElseThrow();
         entity.disable();
         repository.flush();
     }
