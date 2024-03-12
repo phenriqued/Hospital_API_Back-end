@@ -23,10 +23,15 @@ public class DoctorEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String crm;
-    @Embedded
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "information_id")
     private InformationClient information;
-    @Embedded
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
     private AddressClient address;
+
     @Enumerated(EnumType.STRING)
     private Speciality speciality;
     private Boolean isActive;

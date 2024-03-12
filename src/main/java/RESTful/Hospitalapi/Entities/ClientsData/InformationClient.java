@@ -2,20 +2,23 @@ package RESTful.Hospitalapi.Entities.ClientsData;
 
 import RESTful.Hospitalapi.DTOs.ClientsData.InformationClientDTO;
 import RESTful.Hospitalapi.DTOs.ClientsData.UpdateInformationClientDTO;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.function.Consumer;
 
+
+@Table(name = "tb_information_client")
+@Entity
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-
-
-
-@Embeddable
 public class InformationClient {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String cpf;
     @Setter(AccessLevel.PRIVATE)
     private String name;
@@ -25,7 +28,7 @@ public class InformationClient {
     private String phone;
 
     public InformationClient(InformationClientDTO information){
-        this(information.cpf(), information.name(), information.email(), information.phone());
+        this(null, cpfCorrection(information.cpf()), information.name(), information.email(), information.phone());
     }
 
     public void updateInformationClient(UpdateInformationClientDTO update){
@@ -40,6 +43,10 @@ public class InformationClient {
     private void setIfNotEmpty(String value, Consumer<String> setter){
         if(value != null && !value.isEmpty())
             setter.accept(value);
+    }
+
+    private static String cpfCorrection(String cpf){
+        return cpf.replace(".","").replace("-", "");
     }
 
 }

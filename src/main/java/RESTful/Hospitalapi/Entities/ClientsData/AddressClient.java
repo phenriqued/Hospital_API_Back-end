@@ -2,12 +2,13 @@ package RESTful.Hospitalapi.Entities.ClientsData;
 
 import RESTful.Hospitalapi.DTOs.ClientsData.AddressClientDTO;
 import RESTful.Hospitalapi.DTOs.ClientsData.UpdateAddressClientDTO;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.function.Consumer;
 
-@Embeddable
+@Table(name = "tb_address_client")
+@Entity
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,6 +16,9 @@ import java.util.function.Consumer;
 @Setter(AccessLevel.PRIVATE)
 public class AddressClient {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nameStreet;
     private String number;
     private String complement;
@@ -24,7 +28,7 @@ public class AddressClient {
     private String cep;
 
     public AddressClient(AddressClientDTO dto){
-        this(dto.nameStreet(), dto.number(), dto.complement(), dto.district(), dto.city(),
+        this(null, dto.nameStreet(), dto.number(), dto.complement(), dto.district(), dto.city(),
                 dto.uf(), dto.cep());
     }
 

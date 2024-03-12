@@ -18,9 +18,9 @@ public record InformationClientDTO(
         String phone) {
 
     public InformationClientDTO{
-        if(!validateCpf(cpf))
+        if(!validateCpf(cpf)) {
             throw new IllegalArgumentException("Invalid CPF");
-
+        }
     }
 
     public InformationClientDTO(InformationClient information){
