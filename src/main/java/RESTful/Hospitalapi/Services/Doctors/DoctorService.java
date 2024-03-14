@@ -6,6 +6,7 @@ import RESTful.Hospitalapi.DTOs.Doctors.RegisterDoctorDTO;
 import RESTful.Hospitalapi.DTOs.Doctors.UpdateDoctorDTO;
 import RESTful.Hospitalapi.Entities.Doctors.DoctorEntity;
 import RESTful.Hospitalapi.Repositories.Doctors.DoctorRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -29,21 +30,17 @@ public class DoctorService {
                 repository.findByIsActiveTrue(pageable).stream().map(AllDoctorsDetailsDTO::new).toList();
     }
     public DoctorDetailsDTO doctorDetails(Long id){
-        return repository.findById(id).map(DoctorDetailsDTO::new).orElseThrow();
-    }
-
-    public Boolean doctorIsExist(Long id){
-        return repository.findById(id).isPresent();
+        return repository.findById(id).map(DoctorDetailsDTO::new).orElseThrow(EntityNotFoundException::new);
     }
 
     public void updateDoctor(Long id, UpdateDoctorDTO updateDoctor){
-        var entity = repository.findById(id).orElseThrow();
+        var entity = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         entity.updateDoctor(updateDoctor);
         repository.flush();
     }
 
     public void deleteDoctor(Long id){
-        var entity = repository.findById(id).orElseThrow();
+        var entity = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         entity.updateIsActive();
         repository.flush();
     }

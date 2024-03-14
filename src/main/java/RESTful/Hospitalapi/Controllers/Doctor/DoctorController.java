@@ -40,32 +40,21 @@ public class DoctorController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<DoctorDetailsDTO> doctorDetails(@PathVariable Long id){
-        return checkId(id, () -> ResponseEntity.ok().body(service.doctorDetails(id)));
-
+        return ResponseEntity.ok().body(service.doctorDetails(id));
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity updateDoctor(@PathVariable Long id, @RequestBody UpdateDoctorDTO update){
-        return checkId(id, () -> {
-                    service.updateDoctor(id, update);
-                    return ResponseEntity.noContent().build();
-                    });
+    public ResponseEntity updateDoctor(@PathVariable Long id, @RequestBody UpdateDoctorDTO update) {
+        service.updateDoctor(id, update);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity deleteDoctor(@PathVariable Long id){
-        return checkId(id, ()-> {
-            service.deleteDoctor(id);
-            return ResponseEntity.ok().build();
-        });
+    public ResponseEntity deleteDoctor(@PathVariable Long id) {
+        service.deleteDoctor(id);
+        return ResponseEntity.ok().build();
     }
 
-    private ResponseEntity checkId(Long id, Supplier<ResponseEntity> actionOnSuccess){
-        if (!service.doctorIsExist(id)){
-            return ResponseEntity.notFound().build();
-        }
-        return actionOnSuccess.get();
-    }
 }

@@ -31,7 +31,6 @@ public class PatientController {
     @Transactional
     public ResponseEntity<PatientEntity> registerPatient(@RequestBody @Valid RegisterPatientDTO dto, UriComponentsBuilder uriBuilder){
         var patientCreated = service.createPatient(dto);
-
         URI uri = uriBuilder.path("/Patient/{id}").buildAndExpand(patientCreated.getId()).toUri();
         return ResponseEntity.created(uri).body(patientCreated);
     }
@@ -43,33 +42,21 @@ public class PatientController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PatientDetailsDTO> patientDetails(@PathVariable Long id){
-        return checkId(id, ()-> ResponseEntity.ok().body(service.patientDetails(id)));
+        return ResponseEntity.ok().body(service.patientDetails(id));
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity updatePatient(@PathVariable Long id, @RequestBody @Valid UpdatePatientDTO updatePatient){
-        return checkId(id, () ->{
-                service.updatePatient(id, updatePatient);
-                return ResponseEntity.noContent().build();
-        } );
+    public ResponseEntity updatePatient(@PathVariable Long id, @RequestBody @Valid UpdatePatientDTO updatePatient) {
+        service.updatePatient(id, updatePatient);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity deletePatient(@PathVariable Long id){
-        return checkId(id, ()->{
-            service.deletePatient(id);
-            return ResponseEntity.ok().build();
-        });
+    public ResponseEntity deletePatient(@PathVariable Long id) {
+        service.deletePatient(id);
+        return ResponseEntity.ok().build();
     }
-
-    private ResponseEntity checkId(Long id, Supplier<ResponseEntity> actionOnSuccess){
-        if (!service.patientIsExist(id)){
-            return ResponseEntity.notFound().build();
-        }
-        return actionOnSuccess.get();
-    }
-
 
 }
