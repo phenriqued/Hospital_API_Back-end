@@ -58,10 +58,12 @@ public class DoctorEntity {
 
 
     private String createCrm(){
-        StringBuilder value = new StringBuilder(speciality.getValue() + "-");
-        for (int i=0; i<5; i++){
+        StringBuilder value = new StringBuilder();
+        value.append(speciality.getValue());
+        for (int i=0; i<3; i++){
             value.append((int) (Math.random() * 10));
         }
+        value.append(this.information.getCpf().substring(information.getCpf().length()-2));
         return value.toString();
     }
 
