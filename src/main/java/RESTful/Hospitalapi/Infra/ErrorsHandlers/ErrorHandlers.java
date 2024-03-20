@@ -38,7 +38,7 @@ public class ErrorHandlers {
         }
     }
 
-    
+
     private record DataErrorValidationDTO(String fieldError, String defaultMessage){
         public DataErrorValidationDTO(FieldError fieldError){
             this(fieldError.getField(), fieldError.getDefaultMessage());
