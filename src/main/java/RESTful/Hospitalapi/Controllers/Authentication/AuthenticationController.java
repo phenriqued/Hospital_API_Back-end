@@ -2,6 +2,7 @@ package RESTful.Hospitalapi.Controllers.Authentication;
 
 
 import RESTful.Hospitalapi.DTOs.UserAuthenticated.UserAuthenticatedDTO;
+import RESTful.Hospitalapi.Infra.SecurityConfig.TokenDTO.TokenDTO;
 import RESTful.Hospitalapi.Services.Authenticate.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,11 @@ public class AuthenticationController {
 
     @PostMapping
     public ResponseEntity login(@RequestBody @Valid UserAuthenticatedDTO dto){
-        var token = new UsernamePasswordAuthenticationToken(dto.userName(), dto.password());
-        var authentication = manager.authenticate(token);
-        return ResponseEntity.ok().body(authenticationService.authenticate(authentication));
+        var tokenAuthenticate = new UsernamePasswordAuthenticationToken(dto.userName(), dto.password());
+        var authentication = manager.authenticate(tokenAuthenticate);
+        var token = new TokenDTO(authenticationService.authenticate(authentication));
+        
+        return ResponseEntity.ok().body(token);
     }
 
 
