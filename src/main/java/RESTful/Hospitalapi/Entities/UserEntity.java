@@ -3,6 +3,7 @@ package RESTful.Hospitalapi.Entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +11,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "tb_user")
 
 @Getter
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class UserEntity {
 
     @Id
