@@ -1,12 +1,13 @@
 package RESTful.Hospitalapi.Infra.SecurityConfig.SecurityService;
 
 
+import RESTful.Hospitalapi.Services.Users.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -17,10 +18,10 @@ import java.util.stream.Collectors;
 public class JWTService {
 
     private final JwtEncoder encoder;
+    private final JwtDecoder decoder;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
-    public JwtEncoder encoder(){
-        return this.encoder;
-    }
 
     public String generateToken(Authentication authentication){
         Instant now = Instant.now();
@@ -41,6 +42,15 @@ public class JWTService {
         return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
+    public String getSubject(String token){
+        var jwt = decoder.decode(token);
+        return jwt.getSubject();
+    }
 
+    public Authentication getUserAuthenticated(String token){
+        var username = userDetailsService.loadUserByUsername(getSubject(token));
+        return
+             new UsernamePasswordAuthenticationToken(username, null, username.getAuthorities());
+    }
 
 }
