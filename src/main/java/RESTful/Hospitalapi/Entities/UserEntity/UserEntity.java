@@ -1,4 +1,4 @@
-package RESTful.Hospitalapi.Entities;
+package RESTful.Hospitalapi.Entities.UserEntity;
 
 
 import jakarta.persistence.*;

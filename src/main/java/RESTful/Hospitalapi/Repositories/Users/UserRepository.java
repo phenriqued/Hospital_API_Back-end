@@ -1,6 +1,6 @@
 package RESTful.Hospitalapi.Repositories.Users;
 
-import RESTful.Hospitalapi.Entities.UserEntity;
+import RESTful.Hospitalapi.Entities.UserEntity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
