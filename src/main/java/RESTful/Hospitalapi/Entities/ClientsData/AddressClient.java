@@ -2,6 +2,7 @@ package RESTful.Hospitalapi.Entities.ClientsData;
 
 import RESTful.Hospitalapi.DTOs.ClientsData.AddressClientDTO;
 import RESTful.Hospitalapi.DTOs.ClientsData.UpdateAddressClientDTO;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,6 +15,7 @@ import java.util.function.Consumer;
 @AllArgsConstructor
 @Getter
 @Setter(AccessLevel.PRIVATE)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class AddressClient {
 
     @Id

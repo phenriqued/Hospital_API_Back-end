@@ -1,0 +1,1 @@
+ALTER TABLE tb_appointment ADD end_Date_Time datetime NOT NULL;

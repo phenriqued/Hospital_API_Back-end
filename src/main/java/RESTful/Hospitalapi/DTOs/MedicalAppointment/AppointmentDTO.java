@@ -14,8 +14,14 @@ public record AppointmentDTO(
         @JsonAlias("doctor")
         Long doctorId,
         @NotNull
+        Speciality speciality,
+        @NotNull
         @Future
         LocalDateTime dateTime) {
+
+        public LocalDateTime endDateTime(){
+           return this.dateTime.plusHours(1);
+        }
 
 
 }

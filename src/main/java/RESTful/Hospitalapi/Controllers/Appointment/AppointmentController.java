@@ -20,10 +20,7 @@ public class AppointmentController {
 
     @PostMapping
     public ResponseEntity AppointmentScheduling(@RequestBody @Valid AppointmentDTO appointment){
-
-
-
-        return ResponseEntity.ok().body(appointment);
+        return ResponseEntity.ok().body(service.scheduleAppointment(appointment));
     }
 
 

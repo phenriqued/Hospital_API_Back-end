@@ -34,4 +34,6 @@ public class AppointmentEntity {
 
     private LocalDateTime dateTime;
 
+    private LocalDateTime endDateTime;
+
 }
