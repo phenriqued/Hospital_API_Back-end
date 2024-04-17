@@ -2,6 +2,7 @@ package RESTful.Hospitalapi.Controllers.Appointment;
 
 
 import RESTful.Hospitalapi.DTOs.MedicalAppointment.AppointmentDTO;
+import RESTful.Hospitalapi.DTOs.MedicalAppointment.CancelAppointmentDTO;
 import RESTful.Hospitalapi.Services.Appointment.AppointmentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,14 @@ public class AppointmentController {
     private AppointmentService service;
 
     @PostMapping
-    public ResponseEntity AppointmentScheduling(@RequestBody @Valid AppointmentDTO appointment){
+    public ResponseEntity appointmentScheduling(@RequestBody @Valid AppointmentDTO appointment){
         return ResponseEntity.ok().body(service.scheduleAppointment(appointment));
+    }
+
+    @PostMapping("/cancel")
+    public ResponseEntity appointmentSchedulingCancel(@RequestBody @Valid CancelAppointmentDTO cancelDTO){
+        service.cancelAppointment(cancelDTO);
+        return ResponseEntity.ok().build();
     }
 
 

@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Long> {
-    List<AppointmentEntity> findByPatientId(Long id);
+
+    Optional<AppointmentEntity> findByPatientIdAndDateTime(Long id, LocalDateTime dateTime);
 
     List<AppointmentEntity> findByDoctorId(Long id);
 }

@@ -4,6 +4,7 @@ package RESTful.Hospitalapi.Services.Appointment;
 import RESTful.Hospitalapi.DTOs.Doctors.AllDoctorsDetailsDTO;
 import RESTful.Hospitalapi.DTOs.MedicalAppointment.AppointmentDTO;
 import RESTful.Hospitalapi.DTOs.MedicalAppointment.AppointmentSchedulingDTO;
+import RESTful.Hospitalapi.DTOs.MedicalAppointment.CancelAppointmentDTO;
 import RESTful.Hospitalapi.DTOs.Patients.AllPatientDetailsDTO;
 import RESTful.Hospitalapi.Entities.Doctors.DoctorEntity;
 import RESTful.Hospitalapi.Entities.Doctors.Speciality.Speciality;
@@ -45,6 +46,21 @@ public class AppointmentService {
         return  new AppointmentSchedulingDTO(new AllPatientDetailsDTO(patient), new AllDoctorsDetailsDTO(doctor), appointment.dateTime(), appointment.endDateTime());
     }
 
+    public void cancelAppointment(CancelAppointmentDTO cancelAppointmentDTO){
+        if(cancelAppointmentDTO.reason() == CancelAppointmentDTO.Reason.OTHERS && cancelAppointmentDTO.additionalReasonText() == null){
+            throw new IllegalArgumentException("Please provide an additional reason when canceling your appointment.");
+        }
+
+        var cancel = appointmentRepository.findById(cancelAppointmentDTO.id())
+                .orElseThrow(() -> new EntityNotFoundException("The doctor's appointment cannot be found!"));
+
+        if(LocalDateTime.now().minusHours(24).isBefore(cancel.getDateTime())){
+            throw new IllegalArgumentException("It's only possible to cancel an appointment with 24 hours' notice.");
+        }
+        appointmentRepository.deleteById(cancel.getId());
+    }
+
+
     private void validationOfDateTime(LocalDateTime dateTime) {
         if(dateTime.getHour() < 7 || dateTime.getHour() > 19 ||
                 dateTime.getDayOfWeek().compareTo(DayOfWeek.SUNDAY) == 0 ||
@@ -56,12 +72,10 @@ public class AppointmentService {
         var patient = patientRepository.findByIdAndIsActiveTrue(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-        var patientSchedulingList = appointmentRepository.findByPatientId(patient.getId());
-        for(AppointmentEntity client:patientSchedulingList){
-            if(client.getDateTime().getDayOfWeek() == dateTime.getDayOfWeek()) {
-                throw new IllegalArgumentException("The patient cannot have two appointments on the same day");
-            }
+        if(appointmentRepository.findByPatientIdAndDateTime(patient.getId(), dateTime).isPresent()){
+            throw new IllegalArgumentException("The patient cannot have two appointments on the same day");
         }
+
         return patient;
     }
 
