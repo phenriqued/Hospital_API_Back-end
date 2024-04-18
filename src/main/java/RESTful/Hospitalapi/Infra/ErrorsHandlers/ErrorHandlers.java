@@ -1,6 +1,7 @@
 package RESTful.Hospitalapi.Infra.ErrorsHandlers;
 
 
+import RESTful.Hospitalapi.Infra.Exceptions.ValidationException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -39,8 +40,8 @@ public class ErrorHandlers {
         }
     }
 
-    @ExceptionHandler(DateTimeException.class)
-    public ResponseEntity handlerDateTimeError(DateTimeException exception){
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity handlerValidationExceptions(ValidationException exception){
         return ResponseEntity.badRequest().body(exception.getMessage());
     }
 

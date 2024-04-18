@@ -13,7 +13,7 @@ public record AppointmentDTO(
         Long patientId,
         @JsonAlias("doctor")
         Long doctorId,
-        @NotNull
+
         Speciality speciality,
         @NotNull
         @Future
