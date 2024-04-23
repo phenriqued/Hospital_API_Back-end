@@ -12,4 +12,6 @@
 The following tools were used to build the project:
 
 - [Java Spring](https://spring.io/projects/spring-boot)
-- [H2](https://www.h2database.com/html/main.html)
+- [MySQL](https://www.mysql.com/)
+- [Flyway](https://flywaydb.org/)
+- [Caelum Stella](https://github.com/caelum/caelum-stella)
