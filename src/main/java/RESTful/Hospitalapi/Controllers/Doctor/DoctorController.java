@@ -6,6 +6,7 @@ import RESTful.Hospitalapi.DTOs.Doctors.DoctorDetailsDTO;
 import RESTful.Hospitalapi.DTOs.Doctors.RegisterDoctorDTO;
 import RESTful.Hospitalapi.DTOs.Doctors.UpdateDoctorDTO;
 import RESTful.Hospitalapi.Services.Doctors.DoctorService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/Doctor")
+@SecurityRequirement(name = "bearer-key")
 public class DoctorController {
 
     @Autowired

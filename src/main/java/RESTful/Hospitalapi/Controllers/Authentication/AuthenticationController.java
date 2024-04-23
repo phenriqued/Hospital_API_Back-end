@@ -4,6 +4,7 @@ package RESTful.Hospitalapi.Controllers.Authentication;
 import RESTful.Hospitalapi.DTOs.UserAuthenticated.UserAuthenticatedDTO;
 import RESTful.Hospitalapi.Infra.SecurityConfig.TokenDTO.TokenDTO;
 import RESTful.Hospitalapi.Services.Authenticate.AuthenticationService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/authentication")
+@SecurityRequirement(name = "bearer-key")
 public class AuthenticationController {
 
     @Autowired

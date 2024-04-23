@@ -4,6 +4,7 @@ package RESTful.Hospitalapi.Controllers.Appointment;
 import RESTful.Hospitalapi.DTOs.MedicalAppointment.AppointmentDTO;
 import RESTful.Hospitalapi.DTOs.MedicalAppointment.CancelAppointmentDTO;
 import RESTful.Hospitalapi.Services.Appointment.AppointmentService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/ScheduleAppointment")
+@SecurityRequirement(name = "bearer-key")
 public class AppointmentController {
 
     @Autowired
