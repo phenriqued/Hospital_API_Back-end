@@ -20,7 +20,7 @@ public class ErrorHandlers {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity handler404error(EntityNotFoundException exception){
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.badRequest().build();
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
