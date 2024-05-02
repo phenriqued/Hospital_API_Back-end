@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAdjusters;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,7 +39,7 @@ class AppointmentControllerTest {
     @Test
     @DisplayName("should return the code \"200 Ok\" when information is different from null or is valid")
     void appointmentSchedulingScenarioOne() throws Exception{
-        var date = LocalDateTime.now().plusHours(2);
+        var date = LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).withHour(13);
         mockMvc.perform(post("/ScheduleAppointment")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(appointmentJsonTest.write
