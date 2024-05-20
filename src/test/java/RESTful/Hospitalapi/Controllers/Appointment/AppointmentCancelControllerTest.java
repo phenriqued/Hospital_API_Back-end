@@ -42,7 +42,7 @@ class AppointmentCancelControllerTest {
         mockMvc.perform(post("/ScheduleAppointment/cancel")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(cancelAppointmentJsonTest.write(
-                        new CancelAppointmentDTO(56L, Reason.PATIENT_GAVE_UP, null)).getJson()))
+                        new CancelAppointmentDTO(51L, Reason.PATIENT_GAVE_UP, null)).getJson()))
                 .andExpect(status().isOk());
     }
 
